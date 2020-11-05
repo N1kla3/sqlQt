@@ -17,6 +17,7 @@ set(SOURCE_FILES
         source/DropWidget.cpp
         source/MaterialWidget.cpp
         source/ConcentrationWidget.cpp
+        source/DateDropWidget.cpp
         )
 
 set(HEADER_FILES
@@ -26,6 +27,7 @@ set(HEADER_FILES
         header/DropWidget.h
         header/MaterialWidget.h
         header/ConcentrationWidget.h
+        header/DateDropWidget.h
         )
 
 find_package(Qt5 COMPONENTS Widgets Core Sql REQUIRED)

@@ -29,6 +29,7 @@ private:
     void createDroppingWindow();
     void createMaterialsWidget();
     void createConcentrationWidget();
+    void createDateDropWidget();
 
     void switch_to_main();
 
