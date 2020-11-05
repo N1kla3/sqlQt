@@ -17,8 +17,11 @@ public:
     explicit MaterialWidget(QWidget* parent);
 signals:
     void close_signal();
+
+protected:
+    virtual void find_event();
 private:
-    QSqlQueryModel* m_Model;
+    QSqlQueryModel* m_Model = nullptr;
 };
 
 

@@ -26,10 +26,7 @@ MaterialWidget::MaterialWidget(QWidget *parent) :
     auto dropping_field = new QLineEdit(this);
     auto find_button = new QPushButton("Find", this);
 
-    connect(find_button, &QPushButton::clicked, [this](){
-        m_Model->setQuery("SELECT * FROM dropping");
-        qDebug() << m_Model->lastError().text();
-    });
+    connect(find_button, &QPushButton::clicked, this, &MaterialWidget::find_event);
 
     auto back_button = new QPushButton("Close", this);
     connect(back_button, &QPushButton::clicked, [this](){
@@ -42,4 +39,10 @@ MaterialWidget::MaterialWidget(QWidget *parent) :
     layout->addWidget(find_button);
     layout->addWidget(back_button);
     setLayout(layout);
+}
+
+void MaterialWidget::find_event()
+{
+    m_Model->setQuery("SELECT * FROM dropping");
+    qDebug() << m_Model->lastError().text();//TODO: correct query
 }

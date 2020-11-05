@@ -4,7 +4,6 @@ project(sqlQt LANGUAGES CXX)
 
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
-#set(CMAKE_AUTOUIC ON)
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
 
@@ -16,20 +15,20 @@ set(SOURCE_FILES
         source/mainwindow.cpp
         source/FactoryWindow.cpp
         source/DropWidget.cpp
-        source/MaterialWidget.cpp)
+        source/MaterialWidget.cpp
+        source/ConcentrationWidget.cpp
+        )
 
 set(HEADER_FILES
 
         header/mainwindow.h
         header/FactoryWindow.h
         header/DropWidget.h
-        header/MaterialWidget.h)
-
+        header/MaterialWidget.h
+        header/ConcentrationWidget.h
+        )
 
 find_package(Qt5 COMPONENTS Widgets Core Sql REQUIRED)
-
-#qt5_wrap_ui(QT_TEST_UI_HEADERS source/main.ui)
-
 
 add_executable(sqlQt
         main.cpp

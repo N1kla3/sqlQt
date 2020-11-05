@@ -16,6 +16,7 @@
 #include <QStackedWidget>
 #include <header/DropWidget.h>
 #include <header/MaterialWidget.h>
+#include <header/ConcentrationWidget.h>
 
 #include "header/FactoryWindow.h"
 
@@ -74,6 +75,9 @@ void MainWindow::connectButtons()
     connect(m_WatchDropFactory, &QPushButton::clicked, [this](){
         this->m_Widget->setCurrentIndex(3);//TODO: magic numbers
     });
+    connect(m_WatchConcentration, &QPushButton::clicked, [this](){
+        this->m_Widget->setCurrentIndex(4);
+    });
 }
 
 void MainWindow::createFactoryWindow()
@@ -97,6 +101,13 @@ void MainWindow::createMaterialsWidget()
     connect(window, &MaterialWidget::close_signal, this, &MainWindow::switch_to_main);
 }
 
+void MainWindow::createConcentrationWidget()
+{
+    auto window = new ConcentrationWidget(this);
+    m_Widget->addWidget(window);
+    connect(window, &ConcentrationWidget::close_signal, this, &MainWindow::switch_to_main);
+}
+
 void MainWindow::createMainWidget()
 {
     m_MainWidget = new QWidget;
@@ -114,6 +125,7 @@ void MainWindow::init()
     createFactoryWindow();
     createDroppingWindow();
     createMaterialsWidget();
+    createConcentrationWidget();
 }
 
 void MainWindow::switch_to_main()

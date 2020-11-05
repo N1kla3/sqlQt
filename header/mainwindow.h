@@ -28,6 +28,7 @@ private:
     void createFactoryWindow();
     void createDroppingWindow();
     void createMaterialsWidget();
+    void createConcentrationWidget();
 
     void switch_to_main();
 
