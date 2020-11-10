@@ -23,7 +23,7 @@ private:
     void createAddWidget();
     void createDelWidget();
 
-    void addToTable(const QString &dropping, const QString &index, const QString &name, const QString meters);
+    void addToTable(const QString &dropping, const QString &target, const QString &location, const QString& factory);
     void deleteFromTable(const QString &row);
 
     QVBoxLayout* m_Layout = nullptr;

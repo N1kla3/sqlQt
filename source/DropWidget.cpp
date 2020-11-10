@@ -23,9 +23,9 @@ DropWidget::DropWidget(QWidget *parent)
     m_Model->setEditStrategy(QSqlTableModel::OnFieldChange);
     m_Model->select();
     m_Model->setHeaderData(0, Qt::Horizontal, tr("Dropping"));
-    m_Model->setHeaderData(1, Qt::Horizontal, tr("Target Index"));
-    m_Model->setHeaderData(2, Qt::Horizontal, tr("Target Name"));
-    m_Model->setHeaderData(3, Qt::Horizontal, tr("Target Meters"));
+    m_Model->setHeaderData(1, Qt::Horizontal, tr("Target"));
+    m_Model->setHeaderData(2, Qt::Horizontal, tr("Location"));
+    m_Model->setHeaderData(3, Qt::Horizontal, tr("Factory"));
 
     qDebug() << m_Model->lastError().text();
 
@@ -53,22 +53,22 @@ void DropWidget::createAddWidget()
 
     auto drop_label = new QLabel("Dropping", widget);
     auto drop_field = new QLineEdit(widget);
-    auto index_label = new QLabel("Index", widget);
-    auto index_field = new QLineEdit(widget);
-    auto name_label = new QLabel("Name", widget);
-    auto name_field= new QLineEdit(widget);
-    auto meters_label = new QLabel("Meters", widget);
-    auto meters_field= new QLineEdit(widget);
+    auto target_label = new QLabel("Target", widget);
+    auto target_field = new QLineEdit(widget);
+    auto location_label = new QLabel("Location", widget);
+    auto location_field = new QLineEdit(widget);
+    auto factory_label = new QLabel("Factory", widget);
+    auto factory_field = new QLineEdit(widget);
     auto add_button = new QPushButton("Add", widget);
 
     layout->addWidget(drop_label);
     layout->addWidget(drop_field);
-    layout->addWidget(index_label);
-    layout->addWidget(index_field);
-    layout->addWidget(name_label);
-    layout->addWidget(name_field);
-    layout->addWidget(meters_label);
-    layout->addWidget(meters_field);
+    layout->addWidget(target_label);
+    layout->addWidget(target_field);
+    layout->addWidget(location_label);
+    layout->addWidget(location_field);
+    layout->addWidget(factory_label);
+    layout->addWidget(factory_field);
     layout->addWidget(add_button);
 
     widget->setLayout(layout);
@@ -78,8 +78,8 @@ void DropWidget::createAddWidget()
         m_Layout->addWidget(widget);
     } else qDebug() << "layout failed";
 
-    connect(add_button, &QPushButton::clicked, [drop_field, name_field, index_field, meters_field, this](){
-        this->addToTable(drop_field->text(), index_field->text(), name_field->text(), meters_field->text());
+    connect(add_button, &QPushButton::clicked, [drop_field, location_field, target_field, factory_field, this](){
+        this->addToTable(drop_field->text(), target_field->text(), location_field->text(), factory_field->text());
     });
 }
 
@@ -109,14 +109,14 @@ void DropWidget::createDelWidget()
     });
 }
 
-void DropWidget::addToTable(const QString &dropping, const QString &index, const QString &name, const QString meters)
+void DropWidget::addToTable(const QString &dropping, const QString &target, const QString &location, const QString& factory)
 {
     QSqlQuery query;
-    query.prepare("INSERT INTO dropping VALUES (:dropping, :index, :name, :meters)");
+    query.prepare("INSERT INTO dropping VALUES (:dropping, :target, :location, :factory)");
     query.bindValue(":dropping", dropping);
-    query.bindValue(":index", index);
-    query.bindValue(":name", name);
-    query.bindValue(":meters", meters);
+    query.bindValue(":target", target);
+    query.bindValue(":location", location.toInt());
+    query.bindValue(":factory", factory);
     query.exec();
     m_Model->select();
     qDebug() << query.lastError().text();

@@ -21,6 +21,21 @@
 
 #include "header/FactoryWindow.h"
 
+
+//***Constants***
+constexpr int MAIN_WIDGET = 0;
+constexpr int FACTORY_WIDGET = 1;
+constexpr int DROPPING_WIDGET = 2;
+constexpr int WATCH_DROP_WIDGET = 3;
+constexpr int WATCH_CONC_WIDGET = 4;
+constexpr int WATCH_PDK_WIDGET = 5;
+
+constexpr int X_BUTTON_START = 100;
+constexpr int Y_BUTTON_START = 100;
+
+constexpr int BUTTON_W = 100;
+constexpr int BUTTON_H = 100;
+
 MainWindow::MainWindow(QWidget *parent)
         : QMainWindow(parent)
 {
@@ -55,32 +70,31 @@ void MainWindow::createButtons()
 
 void MainWindow::locateButtons()
 {
-    constexpr int BUTTON_W = 100;
-    constexpr int BUTTON_H = 100;
 
-    m_EditFactory->setGeometry(100, 100, BUTTON_W, BUTTON_H);
-    m_EditDropping->setGeometry(200, 200, BUTTON_W, BUTTON_H);
-    m_WatchConcentration->setGeometry(300, 300, BUTTON_W, BUTTON_H);
-    m_WatchPDK->setGeometry(300, 100, BUTTON_W, BUTTON_H);
-    m_WatchDropFactory->setGeometry(100, 300, BUTTON_W, BUTTON_H);
+
+    m_EditFactory->setGeometry(X_BUTTON_START, Y_BUTTON_START, BUTTON_W, BUTTON_H);
+    m_EditDropping->setGeometry(X_BUTTON_START + BUTTON_W, Y_BUTTON_START + BUTTON_H, BUTTON_W, BUTTON_H);
+    m_WatchConcentration->setGeometry(X_BUTTON_START + 2*BUTTON_W, Y_BUTTON_START + 2*BUTTON_H, BUTTON_W, BUTTON_H);
+    m_WatchPDK->setGeometry(X_BUTTON_START + 2*BUTTON_W, Y_BUTTON_START, BUTTON_W, BUTTON_H);
+    m_WatchDropFactory->setGeometry(X_BUTTON_START, Y_BUTTON_START + 2*BUTTON_H, BUTTON_W, BUTTON_H);
 }
 
 void MainWindow::connectButtons()
 {
     connect(m_EditFactory, &QPushButton::clicked, [this](){
-        this->m_Widget->setCurrentIndex(1);
+        this->m_Widget->setCurrentIndex(FACTORY_WIDGET);
     });
     connect(m_EditDropping, &QPushButton::clicked, [this](){
-        this->m_Widget->setCurrentIndex(2);
+        this->m_Widget->setCurrentIndex(DROPPING_WIDGET);
     });
     connect(m_WatchDropFactory, &QPushButton::clicked, [this](){
-        this->m_Widget->setCurrentIndex(3);//TODO: magic numbers
+        this->m_Widget->setCurrentIndex(WATCH_DROP_WIDGET);
     });
     connect(m_WatchConcentration, &QPushButton::clicked, [this](){
-        this->m_Widget->setCurrentIndex(4);
+        this->m_Widget->setCurrentIndex(WATCH_CONC_WIDGET);
     });
     connect(m_WatchPDK, &QPushButton::clicked, [this](){
-        this->m_Widget->setCurrentIndex(5);
+        this->m_Widget->setCurrentIndex(WATCH_PDK_WIDGET);
     });
 }
 
@@ -142,5 +156,5 @@ void MainWindow::init()
 
 void MainWindow::switch_to_main()
 {
-    m_Widget->setCurrentIndex(0);
+    m_Widget->setCurrentIndex(MAIN_WIDGET);
 }

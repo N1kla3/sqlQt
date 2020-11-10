@@ -24,7 +24,7 @@ private:
     void createAddWidg();
     void createDelWidg();
 
-    void addToTable(const QString& id, const QString& name, const QString& drop);
+    void addToTable(const QString& id, const QString& name);
     void deleteFromTable(const QString& column);
 
     QBoxLayout* m_Layout = nullptr;

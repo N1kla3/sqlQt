@@ -12,6 +12,7 @@
 #include <QLineEdit>
 #include <QtWidgets/QPushButton>
 #include <QtSql/QSqlQuery>
+#include <QtWidgets/QDateEdit>
 
 FactoryWindow::FactoryWindow(QWidget *parent)
         : QWidget(parent)
@@ -24,7 +25,6 @@ FactoryWindow::FactoryWindow(QWidget *parent)
     m_Model->select();
     m_Model->setHeaderData(0, Qt::Horizontal, tr("id"));
     m_Model->setHeaderData(1, Qt::Horizontal, tr("Name"));
-    m_Model->setHeaderData(2, Qt::Horizontal, tr("Dropping"));
 
     qDebug() << m_Model->lastError().text();
 
@@ -55,16 +55,12 @@ void FactoryWindow::createAddWidg()
     id_field->setValidator(new QIntValidator(0,1111,this));
     auto name_label = new QLabel("Name", widget);
     auto name_field = new QLineEdit(widget);
-    auto drop_label = new QLabel("Dropping", widget);
-    auto drop_field= new QLineEdit(widget);
     auto add_button = new QPushButton("Add", widget);
 
     layout->addWidget(id_label);
     layout->addWidget(id_field);
     layout->addWidget(name_label);
     layout->addWidget(name_field);
-    layout->addWidget(drop_label);
-    layout->addWidget(drop_field);
     layout->addWidget(add_button);
 
     widget->setLayout(layout);
@@ -74,11 +70,8 @@ void FactoryWindow::createAddWidg()
         m_Layout->addWidget(widget);
     } else qDebug() << "layout failed";
 
-    connect(add_button, &QPushButton::clicked, [id_field, name_field, drop_field, this](){
-        auto id = id_field->text();
-        auto name = name_field->text();
-        auto drop = drop_field->text();
-        this->addToTable(id_field->text(), name_field->text(), drop_field->text());
+    connect(add_button, &QPushButton::clicked, [id_field, name_field,this](){
+        this->addToTable(id_field->text(), name_field->text() );
     });
 }
 
@@ -108,15 +101,14 @@ void FactoryWindow::createDelWidg()
     });
 }
 
-void FactoryWindow::addToTable(const QString &id, const QString &name, const QString &drop)
+void FactoryWindow::addToTable(const QString &id, const QString &name)
 {
    int new_id = id.toInt();
    QSqlQuery query;
-   query.prepare("INSERT INTO factory VALUES (:id, :name, :drop)");
+   query.prepare("INSERT INTO factory VALUES (:id, :name)");
    query.bindValue(":id", new_id);
    query.bindValue(":name", name);
-   query.bindValue(":drop", drop);
-   query.exec();//TODO: add date
+   query.exec();
    m_Model->select();
    qDebug() << query.lastError().text();
 }
