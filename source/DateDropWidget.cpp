@@ -12,6 +12,7 @@
 #include <QtWidgets/QPushButton>
 #include <QLineEdit>
 #include <QDateEdit>
+#include <QtSql/QSqlQuery>
 
 DateDropWidget::DateDropWidget(QWidget *parent)
         : QWidget(parent)
@@ -23,14 +24,18 @@ DateDropWidget::DateDropWidget(QWidget *parent)
     auto table = new QTableView(this);
     table->setModel(m_Model);
 
-    auto dropping_label = new QLabel("Dropping", this);
-    auto dropping_field = new QLineEdit(this);
     auto date_label = new QLabel("Date", this);
     auto date_field = new QDateEdit(this);
     auto find_button = new QPushButton("Find", this);
 
-    connect(find_button, &QPushButton::clicked, this, [this](){
-        m_Model->setQuery("SELECT * FROM dropping");
+    connect(find_button, &QPushButton::clicked, this, [date_field, this](){
+        auto text = date_field->text();
+        QSqlQuery q;
+        q.prepare("SELECT dropping FROM dropping WHERE mdate < STR_TO_DATE(:text, '%d/%m/%Y')");
+        q.bindValue(":text", text);
+        q.exec();
+        qDebug() << q.lastError().text();
+        m_Model->setQuery(q);
     });
 
     auto back_button = new QPushButton("Close", this);
@@ -39,8 +44,6 @@ DateDropWidget::DateDropWidget(QWidget *parent)
     });
 
     layout->addWidget(table);
-    layout->addWidget(dropping_label);
-    layout->addWidget(dropping_field);
     layout->addWidget(date_label);
     layout->addWidget(date_field);
     layout->addWidget(find_button);

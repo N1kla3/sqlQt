@@ -8,6 +8,7 @@
 #include <QWidget>
 
 class QSqlQueryModel;
+class QLineEdit;
 
 class MaterialWidget : public QWidget
 {
@@ -20,7 +21,8 @@ signals:
 
 protected:
     virtual void find_event();
-private:
+
+    QLineEdit* dropping_field;
     QSqlQueryModel* m_Model = nullptr;
 };
 
