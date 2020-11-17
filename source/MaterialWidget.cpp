@@ -46,9 +46,8 @@ void MaterialWidget::find_event()
 {
     auto text = dropping_field->text();
     QSqlQuery q;
-    q.prepare("SELECT element, PDK, KNK, ph_conc, d.target FROM target_elements "
-              "INNER JOIN dropping d on target_elements.target = d.target "
-              "WHERE dropping = :text");
+    q.prepare("SELECT element, PDK, KNK, ph_conc FROM target_elements "
+              "WHERE dropping_name = :text");
     q.bindValue(":text", text);
     q.exec();
     m_Model->setQuery(q);

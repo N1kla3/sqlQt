@@ -30,7 +30,7 @@ constexpr int WATCH_DROP_WIDGET = 3;
 constexpr int WATCH_CONC_WIDGET = 4;
 constexpr int WATCH_PDK_WIDGET = 5;
 
-constexpr int X_BUTTON_START = 100;
+constexpr int X_BUTTON_START = 200;
 constexpr int Y_BUTTON_START = 100;
 
 constexpr int BUTTON_W = 100;
@@ -48,7 +48,7 @@ MainWindow::MainWindow(QWidget *parent)
         qDebug() << QObject::trUtf8("Database error connect") << db.lastError().text();
     }
 
-    this->setFixedSize(500, 500);
+    this->setFixedSize(700, 500);
 
     m_Widget = new QStackedWidget;
     init();
@@ -61,17 +61,15 @@ MainWindow::~MainWindow()
 
 void MainWindow::createButtons()
 {
-    m_EditFactory = new QPushButton("factory", m_MainWidget);
-    m_EditDropping = new QPushButton("dropping", m_MainWidget);
-    m_WatchConcentration = new QPushButton("Watch Conc", m_MainWidget);
-    m_WatchPDK = new QPushButton("Watch Pdk", m_MainWidget);
-    m_WatchDropFactory = new QPushButton("Watch Factory", m_MainWidget);
+    m_EditFactory = new QPushButton("Factory", m_MainWidget);
+    m_EditDropping = new QPushButton("Droppings", m_MainWidget);
+    m_WatchConcentration = new QPushButton("Watch\n Concentration", m_MainWidget);
+    m_WatchPDK = new QPushButton("Watch PDK", m_MainWidget);
+    m_WatchDropFactory = new QPushButton("Watch\n by Time", m_MainWidget);
 }
 
 void MainWindow::locateButtons()
 {
-
-
     m_EditFactory->setGeometry(X_BUTTON_START, Y_BUTTON_START, BUTTON_W, BUTTON_H);
     m_EditDropping->setGeometry(X_BUTTON_START + BUTTON_W, Y_BUTTON_START + BUTTON_H, BUTTON_W, BUTTON_H);
     m_WatchConcentration->setGeometry(X_BUTTON_START + 2*BUTTON_W, Y_BUTTON_START + 2*BUTTON_H, BUTTON_W, BUTTON_H);

@@ -12,6 +12,7 @@
 #include <QPushButton>
 #include <QLabel>
 #include <QSqlError>
+#include <QtWidgets/QDateEdit>
 
 DropWidget::DropWidget(QWidget *parent)
         : QWidget(parent)
@@ -23,9 +24,8 @@ DropWidget::DropWidget(QWidget *parent)
     m_Model->setEditStrategy(QSqlTableModel::OnFieldChange);
     m_Model->select();
     m_Model->setHeaderData(0, Qt::Horizontal, tr("Dropping"));
-    m_Model->setHeaderData(1, Qt::Horizontal, tr("Target"));
-    m_Model->setHeaderData(2, Qt::Horizontal, tr("Location"));
-    m_Model->setHeaderData(3, Qt::Horizontal, tr("Factory"));
+    m_Model->setHeaderData(1, Qt::Horizontal, tr("Factory"));
+    m_Model->setHeaderData(2, Qt::Horizontal, tr("Date"));
 
     qDebug() << m_Model->lastError().text();
 
@@ -53,22 +53,16 @@ void DropWidget::createAddWidget()
 
     auto drop_label = new QLabel("Dropping", widget);
     auto drop_field = new QLineEdit(widget);
-    auto target_label = new QLabel("Target", widget);
-    auto target_field = new QLineEdit(widget);
-    auto location_label = new QLabel("Location", widget);
-    auto location_field = new QLineEdit(widget);
     auto factory_label = new QLabel("Factory", widget);
     auto factory_field = new QLineEdit(widget);
+    auto data_field = new QDateEdit(this);
     auto add_button = new QPushButton("Add", widget);
 
     layout->addWidget(drop_label);
     layout->addWidget(drop_field);
-    layout->addWidget(target_label);
-    layout->addWidget(target_field);
-    layout->addWidget(location_label);
-    layout->addWidget(location_field);
     layout->addWidget(factory_label);
     layout->addWidget(factory_field);
+    layout->addWidget(data_field);
     layout->addWidget(add_button);
 
     widget->setLayout(layout);
@@ -78,8 +72,8 @@ void DropWidget::createAddWidget()
         m_Layout->addWidget(widget);
     } else qDebug() << "layout failed";
 
-    connect(add_button, &QPushButton::clicked, [drop_field, location_field, target_field, factory_field, this](){
-        this->addToTable(drop_field->text(), target_field->text(), location_field->text(), factory_field->text());
+    connect(add_button, &QPushButton::clicked, [drop_field, factory_field, data_field, this](){
+        this->addToTable(drop_field->text(), factory_field->text(), data_field->date());
     });
 }
 
@@ -109,14 +103,13 @@ void DropWidget::createDelWidget()
     });
 }
 
-void DropWidget::addToTable(const QString &dropping, const QString &target, const QString &location, const QString& factory)
+void DropWidget::addToTable(const QString &dropping, const QString& factory, const QDate& date)
 {
     QSqlQuery query;
-    query.prepare("INSERT INTO dropping VALUES (:dropping, :target, :location, :factory)");
+    query.prepare("INSERT INTO dropping VALUES (:dropping, :factory, :date)");
     query.bindValue(":dropping", dropping);
-    query.bindValue(":target", target);
-    query.bindValue(":location", location.toInt());
     query.bindValue(":factory", factory);
+    query.bindValue(":date", date);
     query.exec();
     m_Model->select();
     qDebug() << query.lastError().text();

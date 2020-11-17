@@ -21,8 +21,7 @@ void ConcentrationWidget::find_event()
     QSqlQuery q;
     q.prepare("SELECT elements.element, concentration FROM elements "
                "INNER JOIN target_elements te on elements.element = te.element "
-               "WHERE target IN (SELECT target FROM dropping "
-               "WHERE dropping = :text) ");
+               "WHERE dropping_name = :text ");
     q.bindValue(":text", text);
     q.exec();
     m_Model->setQuery(q);
